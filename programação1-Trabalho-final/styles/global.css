@@ -1,0 +1,205 @@
+/* GLOBAL RESET & FONT */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    background: #f2f5f9;
+    color: #333;
+}
+
+/* HEADER */
+.header {
+    background: #fff;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e3e3e3;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.menu-btn {
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-login,
+.logout-btn {
+    background: #0055ff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.logout-btn.hidden {
+    display: none;
+}
+
+/* ASIDE (menu lateral) */
+.aside {
+    width: 260px;
+    height: 100vh;
+    background: #fff;
+    position: fixed;
+    top: 0;
+    left: -260px;
+    transition: 0.3s ease;
+    padding: 20px;
+    border-right: 1px solid #e3e3e3;
+    z-index: 20;
+}
+
+.aside.active {
+    left: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.aside-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.aside-btn {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 12px;
+    border: none;
+    background: #f2f2f2;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: left;
+}
+
+.aside-btn:hover {
+    background: #e7e7e7;
+}
+
+/* MAIN / LISTA DE CARDS (produtos, livros) */
+.lista-container,
+.main {
+    padding: 30px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* CARD */
+.card {
+    background: #fff;
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    transition: transform 0.15s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+/* Botões de editar / excluir (mesmo desabilitados) */
+.btn-edit,
+.btn-delete {
+    padding: 8px 14px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: not-allowed;
+    background: #ccc;
+    color: #666;
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+/* MENSAGENS DINÂMICAS */
+.error-message {
+    color: #d32f2f;
+    background: #fdecea;
+    padding: 12px;
+    border-radius: 6px;
+    margin: 20px;
+    text-align: center;
+}
+
+.no-products,
+.no-books {
+    color: #555;
+    padding: 15px;
+    text-align: center;
+}
+
+/* FORMULÁRIOS */
+.form-container {
+    background: #fff;
+    padding: 25px;
+    width: 400px;
+    max-width: 90%;
+    margin: 40px auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.1);
+}
+
+.form-label {
+    margin-top: 10px;
+    display: block;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    border-radius: 5px;
+    border: 1px solid #d1d1d1;
+}
+
+.btn-primary {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #0055ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px;
+    color: #333;
+}
+
+/* Imagens nas cards de livros (caso haja) */
+.card img {
+    max-width: 100%;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+.hidden {
+    display: none !important;
+}
