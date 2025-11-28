@@ -1,0 +1,50 @@
+Projeto Hub - API
+
+Funcionalidades
+
+1. Hub
+
+* Página inicial de navegação.
+* Permite acessar todas as áreas do sistema: Biblioteca, Adicionar Livro, Produtos, Adicionar Produto e Visão Computacional.
+* Fornece botões rápidos para login, biblioteca, produtos e visão computacional.
+
+2. Login e Cadastro
+
+* Realize login para acessar todas as funcionalidades.
+* Cadastro de novos usuários com email, usuário e senha.
+* Logout disponível para encerrar a sessão.
+
+3. Biblioteca
+
+* Listagem de livros cadastrados.
+* Permite adicionar novos livros com título, resumo, valor e capa (URL).
+* Página de adição de livros separada (`adicaol.html`).
+
+ 4. Produtos
+
+* Listagem de produtos cadastrados.
+* Permite adicionar novos produtos com descrição e valor.
+* Página de adição de produtos separada (`adicao_produto.html`).
+
+ 5. Visão Computacional
+
+* Upload de imagens para processamento.
+* Funcionalidades:
+
+  * Classificar Imagem**: Analisa e classifica a imagem enviada.
+  * Detectar Objetos**: Detecta objetos presentes na imagem.
+
+* Resultados exibidos lado a lado para fácil comparação.
+
+
+Como Começar
+
+1. Abra o arquivo "hub.html" no navegador.
+2. Clique em Login para acessar sua conta ou cadastre-se se ainda não tiver.
+3. Após o login, você poderá navegar para qualquer área do sistema:
+
+   * Biblioteca → Consultar ou adicionar livros.
+   * Produtos → Consultar ou adicionar produtos.
+   * Visão Computacional → Enviar imagens para classificação ou detecção de objetos.
+
+4. Utilize o menu lateral (☰) para navegar rapidamente entre as páginas.
