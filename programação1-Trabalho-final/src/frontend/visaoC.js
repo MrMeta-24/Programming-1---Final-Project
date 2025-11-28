@@ -1,90 +1,114 @@
-const API = "https://api.rodrigoribeiro.net";
-const TOKEN = "SEU_TOKEN_AQUI";
+window.toggleAside = function () {
+    document.getElementById("asside").classList.toggle("active");
+};
 
-function toggleMenu() {
-    document.getElementById("sideMenu").classList.toggle("active");
-}
+window.irParaLogin = function () {
+    window.location.href = "login.html";
+};
 
-function selectTool(tool) {
-    document.getElementById("classify-box").classList.add("hidden");
-    document.getElementById("detect-box").classList.add("hidden");
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginBtn = document.getElementById("loginBtn");
 
-    if (tool === "classify") {
-        document.getElementById("classify-box").classList.remove("hidden");
-    } else {
-        document.getElementById("detect-box").classList.remove("hidden");
+    if (localStorage.getItem("authToken")) {
+        logoutBtn.classList.remove("hidden");
+        loginBtn.style.display = "none";
     }
 
-    toggleMenu();
-}
+    logoutBtn.onclick = () => {
+        localStorage.removeItem("authToken");
+        window.location.href = "login.html";
+    };
+});
 
-function toBase64(file) {
+function fileToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(",")[1]);
-        reader.onerror = error => reject(error);
+        reader.onload = () => resolve(reader.result.split(",")[1]); 
+        reader.onerror = reject;
         reader.readAsDataURL(file);
     });
 }
 
-async function classifyImage() {
-    const file = document.getElementById("classifyInput").files[0];
-    if (!file) return alert("Selecione uma imagem!");
+const API_URL = "https://api.rodrigoribeiro.net";
 
-    const base64 = await toBase64(file);
+async function classificarImagem() {
+    const imagem = document.getElementById("imageInput").files[0];
+    if (!imagem) { alert("Selecione uma imagem!"); return; }
 
-    document.getElementById("classifyPreview").src = URL.createObjectURL(file);
-    document.getElementById("classifyPreview").classList.remove("hidden");
-    document.getElementById("classifyResult").innerHTML = "Processando...";
+    const base64 = await fileToBase64(imagem);
+    document.getElementById("previewImg").src = "data:image/png;base64," + base64;
+    document.getElementById("previewImg").style.display = "block";
 
-    const resp = await fetch(API + "/classificar", {
+    const token = localStorage.getItem("authToken");
+
+    const resp = await fetch(`${API_URL}/classificar`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + TOKEN
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ image: base64 })
     });
 
     const data = await resp.json();
 
-    document.getElementById("classifyResult").innerHTML =
-        `<p><strong>Classe:</strong> ${data.class}</p>
-         <p><strong>Confiança:</strong> ${(data.score * 100).toFixed(2)}%</p>`;
+    document.getElementById("resultado").innerHTML = `
+        <div class="card">
+            <h3>Classificação:</h3>
+            <p><strong>Classe:</strong> ${data.response.class}</p>
+            <p><strong>Confiança:</strong> ${(data.response.score * 100).toFixed(2)}%</p>
+        </div>
+    `;
 }
 
-async function detectImage() {
-    const file = document.getElementById("detectInput").files[0];
-    if (!file) return alert("Selecione uma imagem!");
+async function detectarObjetos() {
+    const imagem = document.getElementById("imageInput").files[0];
+    if (!imagem) { alert("Selecione uma imagem!"); return; }
 
-    const base64 = await toBase64(file);
+    const base64 = await fileToBase64(imagem);
+    document.getElementById("previewImg").src = "data:image/png;base64," + base64;
+    document.getElementById("previewImg").style.display = "block";
 
-    document.getElementById("detectPreview").src = URL.createObjectURL(file);
-    document.getElementById("detectPreview").classList.remove("hidden");
-    document.getElementById("detectResult").innerHTML = "Processando...";
+    const token = localStorage.getItem("authToken");
 
-    const resp = await fetch(API + "/detectar", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + TOKEN
-        },
-        body: JSON.stringify({
-            image: base64,
-            preview: true
-        })
-    });
+    try {
+        const resp = await fetch(`${API_URL}/detectar`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ image: base64, preview: true })
+        });
 
-    const data = await resp.json();
+        if (!resp.ok) throw new Error(`Erro ao detectar objetos: ${resp.statusText}`);
 
-    let list = "<h3>Objetos Detectados:</h3>";
+        const data = await resp.json();
 
-    data.objects.forEach(obj => {
-        list += `<p>• <strong>${obj.class}</strong> (${(obj.score * 100).toFixed(1)}%)</p>`;
-    });
+        if (data.objects && data.objects.length > 0) {
+            let lista = "<h3>Objetos detectados:</h3>";
 
-    document.getElementById("detectResult").innerHTML = list;
+            data.objects.forEach(o => {
+                lista += `
+                    <div class="card">
+                        <p><strong>Classe:</strong> ${o.class}</p>
+                        <p><strong>Confiança:</strong> ${(o.score * 100).toFixed(2)}%</p>
+                        <p><strong>Caixa:</strong> [${o.boundingbox.xyxy.join(", ")}]</p>
+                    </div>
+                `;
+            });
 
-    document.getElementById("detectPreview").src =
-        "data:image/png;base64," + data.preview_img;
+            document.getElementById("resultado").innerHTML = lista;
+
+            document.getElementById("previewProcessado").src = "data:image/png;base64," + data.preview_img;
+            document.getElementById("previewProcessado").style.display = "block";
+        } else {
+            document.getElementById("resultado").innerHTML = "<h3>Nenhum objeto detectado.</h3>";
+        }
+
+    } catch (error) {
+        console.error('Erro na detecção de objetos:', error);
+        alert("Ocorreu um erro ao detectar objetos. Verifique o console.");
+    }
 }

@@ -6,9 +6,13 @@
     font-family: "Inter", sans-serif;
 }
 
+html, body {
+    height: 100%; /* Garante que o body ocupe 100% da altura da tela */
+}
+
 body {
-    background: #f2f5f9;
-    color: #333;
+    display: flex;
+    flex-direction: column;
 }
 
 /* HEADER */
@@ -187,10 +191,66 @@ body {
 
 /* FOOTER */
 footer {
-    margin-top: 40px;
-    text-align: center;
+    background-color: #222;
+    color: white;
     padding: 20px;
-    color: #333;
+    text-align: center;
+    font-size: 0.875rem;
+    width: 100%;
+    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
+    margin-top: auto; /* Garante que o footer vai para o final da tela */
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.footer-left, .footer-center, .footer-right {
+    flex: 1;
+    text-align: center;
+}
+
+.footer-left p {
+    margin: 0;
+}
+
+.footer-center nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-center nav ul li {
+    display: inline;
+    margin-right: 15px;
+}
+
+.footer-center nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-center nav ul li a:hover {
+    color: #0055ff;
+}
+
+.footer-right p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.footer-right p em {
+    font-style: italic;
+}
+
+.footer-right p strong {
+    color: #fff;
 }
 
 /* Imagens nas cards de livros (caso haja) */
